@@ -1,11 +1,76 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hello World!</title>
+    <title>Mini</title>
+    <meta charset="utf-8"/>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;;
+        }
+
+        .input {
+            width: 50%;
+            height: 100%;
+            float: left;
+        }
+
+        .output {
+            width: 50%;
+            height: 100%;
+            margin-left: 50%;
+        }
+
+        .output::after {
+            content: "";
+            clear: both;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+        }
+
+        textarea:focus {
+            outline: none !important;
+            border: 1px solid red;
+            box-shadow: 0 0 10px #719ECE;
+        }
+    </style>
 </head>
 <body>
-<h1>Hello World!</h1>
-We are using node.js <script>document.write(process.version)</script>
-and atom-shell <script>document.write(process.versions['atom-shell'])</script>.
+<h2>Minify</h2>
+
+<div class="input">
+    <textarea id="input-content"></textarea>
+</div>
+<div class="output">
+    <textarea id="output-content"></textarea>
+</div>
+<script>
+    var ipc = require("ipc");
+
+    function $(id) {
+        return document.getElementById(id);
+    }
+    var inputTextArea = $('input-content');
+    var outputTextArea = $('output-content');
+    inputTextArea.addEventListener('input', function inputChange(){
+        console.log("input change");
+        console.log(this.value);
+        ipc.send('compress', {
+            type: 'js',
+            code: this.value
+        });
+    });
+
+    ipc.on("compressed", function compressed(args) {
+        outputTextArea.value = args.code;
+    });
+
+    function minify(content, type) {
+
+    }
+</script>
 </body>
 </html>
