@@ -3,44 +3,15 @@
 <head>
     <title>Mini</title>
     <meta charset="utf-8"/>
-    <style>
-        html, body {
-            width: 100%;
-            height: 100%;;
-        }
-
-        .input {
-            width: 50%;
-            height: 100%;
-            float: left;
-        }
-
-        .output {
-            width: 50%;
-            height: 100%;
-            margin-left: 50%;
-        }
-
-        .output::after {
-            content: "";
-            clear: both;
-        }
-
-        textarea {
-            width: 100%;
-            height: 100%;
-        }
-
-        textarea:focus {
-            outline: none !important;
-            border: 1px solid red;
-            box-shadow: 0 0 10px #719ECE;
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css"/>
 </head>
 <body>
-<h2>Minify</h2>
-
+<div class="type-bar">
+    <span class="code-type">Code Type:</span>
+    <button id="type-js" class="js current">JavaScript</button>
+    <button id="type-css" class="css">CSS</button>
+    <button id="type-html">HTML</button>
+</div>
 <div class="input">
     <textarea id="input-content"></textarea>
 </div>
@@ -48,29 +19,44 @@
     <textarea id="output-content"></textarea>
 </div>
 <script>
-    var ipc = require("ipc");
+    (function(){
+        "use strict";
+        var ipc = require("ipc");
 
-    function $(id) {
-        return document.getElementById(id);
-    }
-    var inputTextArea = $('input-content');
-    var outputTextArea = $('output-content');
-    inputTextArea.addEventListener('input', function inputChange(){
-        console.log("input change");
-        console.log(this.value);
-        ipc.send('compress', {
-            type: 'js',
-            code: this.value
+        function $(id) {
+            return document.getElementById(id);
+        }
+        var inputTextArea = $('input-content');
+        var outputTextArea = $('output-content');
+        var compressTimeout = null;
+        inputTextArea.addEventListener('input', function inputChange(){
+            clearTimeout(compressTimeout);
+            var code = this.value;
+            compressTimeout = setTimeout(function(){
+                ipc.send('compress', {
+                    type: 'js',
+                    code: code
+                });
+            }, 500);
         });
-    });
 
-    ipc.on("compressed", function compressed(args) {
-        outputTextArea.value = args.code;
-    });
+        ipc.on("compressed", function compressed(args) {
+            outputTextArea.value = args.code;
+        });
 
-    function minify(content, type) {
+        var codeTypeArray = ["type-js", "type-css", "type-html"];
 
-    }
+        function changeCodeType(){
+            codeTypeArray.forEach(function(item){
+                $(item).classList.remove('current');
+            });
+            this.classList.add('current');
+        }
+
+        codeTypeArray.forEach(function(item){
+            $(item).addEventListener("click", changeCodeType);
+        });
+    })();
 </script>
 </body>
 </html>
