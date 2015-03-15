@@ -1,6 +1,7 @@
 app = require("app")
 BrowserWindow = require("browser-window")
 ipc = require("ipc")
+dialog = require("dialog")
 
 api = require("./api")
 
@@ -28,7 +29,10 @@ ipc.on 'compress', (e, args)->
         when 'html' then minifyFunc = api.minifyHTML
 
     minifyFunc.call null, args.code, (err, code)->
-        e.sender.send 'compressed',
-            error: err
-            code: code
+        if err
+            dialog.showErrorBox(err.message, err.stack);
+        else
+            e.sender.send 'compressed',
+                error: err
+                code: code
 

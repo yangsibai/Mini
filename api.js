@@ -52,13 +52,13 @@
    */
 
   exports.minifyHTML = function(source, cb, options) {
-    var default_options, err, result;
+    var default_options, err, k, result;
     default_options = {
       removeComments: true,
       removeCommentsFromCDATA: true,
       removeCDATASectionsFromCDATA: true,
       collapseWhitespace: true,
-      conservativeCollapse: ture,
+      conservativeCollapse: true,
       preserveLineBreaks: true,
       collapseBooleanAttributes: true,
       removeAttributeQuotes: true,
@@ -68,22 +68,28 @@
       removeEmptyAttributes: true,
       removeScriptTypeAttributes: true,
       removeStyleLinkTypeAttributes: true,
-      removeOptionalTags: false,
-      removeIgnored: false,
-      removeEmptyElements: true,
-      lint: true,
-      keepClosingSlash: true,
-      caseSensitive: true,
-      minifyJS: true,
+      removeoptionaltags: false,
+      removeignored: false,
+      removeemptyelements: true,
+      keepclosingslash: true,
+      casesensitive: true,
+      minifyjs: true,
       minifyCSS: true,
       minifyURLs: false,
-      ignoreCustomComments: true,
-      processScripts: true,
-      maxLineLength: true,
-      customAttrAssign: true,
-      customAttrSurround: [],
-      customAttrCollapse: void 0
+      ignoreCustomComments: [],
+      processScripts: [],
+      customAttrAssign: [],
+      customAttrSurround: []
     };
+    if (options) {
+      for (k in default_options) {
+        if (!options[k]) {
+          options[k] = default_options[k];
+        }
+      }
+    } else {
+      options = default_options;
+    }
     try {
       result = HtmlMinify.minify(source, options);
       return cb(null, result);

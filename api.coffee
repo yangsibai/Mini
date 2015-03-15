@@ -36,7 +36,7 @@ exports.minifyHTML = (source, cb, options)->
         removeCommentsFromCDATA: true
         removeCDATASectionsFromCDATA: true
         collapseWhitespace: true
-        conservativeCollapse: ture
+        conservativeCollapse: true
         preserveLineBreaks: true
         collapseBooleanAttributes: true
         removeAttributeQuotes: true
@@ -46,24 +46,28 @@ exports.minifyHTML = (source, cb, options)->
         removeEmptyAttributes: true
         removeScriptTypeAttributes: true
         removeStyleLinkTypeAttributes: true
-        removeOptionalTags: false
-        removeIgnored: false
-        removeEmptyElements: true
-        lint: true
-        keepClosingSlash: true
-        caseSensitive: true
-        minifyJS: true
+        removeoptionaltags: false
+        removeignored: false
+        removeemptyelements: true
+#        lint: true
+        keepclosingslash: true
+        casesensitive: true
+        minifyjs: true
         minifyCSS: true
         minifyURLs: false
-        ignoreCustomComments: true
-        processScripts: true
-        maxLineLength: true
-        customAttrAssign: true
+        ignoreCustomComments: []
+        processScripts: []
+        customAttrAssign: []
         customAttrSurround: []
-        customAttrCollapse: undefined
+
+    if options
+        for k of default_options
+            options[k] = default_options[k] unless options[k]
+    else
+        options = default_options
 
     try
-        result = HtmlMinify.minify(source, options)
+        result = HtmlMinify.minify source, options
         cb null, result
     catch err
         cb err
