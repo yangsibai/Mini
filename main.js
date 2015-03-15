@@ -32,9 +32,24 @@
   });
 
   ipc.on('compress', function(e, args) {
-    if (args.type === 'js') {
-      return e.sender.send('compressed', api.minifyJS(args.code));
+    var minifyFunc;
+    minifyFunc = null;
+    switch (args.type) {
+      case 'js':
+        minifyFunc = api.minifyJS;
+        break;
+      case 'css':
+        minifyFunc = api.minifyCss;
+        break;
+      case 'html':
+        minifyFunc = api.minifyHTML;
     }
+    return minifyFunc.call(null, args.code, function(err, code) {
+      return e.sender.send('compressed', {
+        error: err,
+        code: code
+      });
+    });
   });
 
 }).call(this);

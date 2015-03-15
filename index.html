@@ -9,9 +9,9 @@
 <div class="wrapper">
     <div class="type-bar">
         <span class="code-type">Code Type:</span>
-        <button id="type-js" class="js current">JavaScript</button>
-        <button id="type-css" class="css">CSS</button>
-        <button id="type-html">HTML</button>
+        <button id="type-js" class="js current" value="js">JavaScript</button>
+        <button id="type-css" class="css" value="css">CSS</button>
+        <button id="type-html" value="html">HTML</button>
     </div>
     <div class="code">
         <div class="input">
@@ -20,7 +20,7 @@
         <div class="output">
             <textarea id="output-content"></textarea>
         </div>
-        <div class="ball">
+        <div id="ball" class="ball">
 
         </div>
     </div>
@@ -28,6 +28,21 @@
 <script>
     (function(){
         "use strict";
+        var currentCodeType = 'js';
+        var codeTypeArray = ["type-js", "type-css", "type-html"];
+
+        function changeCodeType(){
+            codeTypeArray.forEach(function(item){
+                $(item).classList.remove('current');
+            });
+            currentCodeType = this.value;
+            this.classList.add('current');
+        }
+
+        codeTypeArray.forEach(function(item){
+            $(item).addEventListener("click", changeCodeType);
+        });
+
         var ipc = require("ipc");
 
         function $(id) {
@@ -35,33 +50,26 @@
         }
         var inputTextArea = $('input-content');
         var outputTextArea = $('output-content');
-        var compressTimeout = null;
+//        var compressTimeout = null;
         inputTextArea.addEventListener('input', function inputChange(){
-            clearTimeout(compressTimeout);
-            var code = this.value;
-            compressTimeout = setTimeout(function(){
-                ipc.send('compress', {
-                    type: 'js',
-                    code: code
-                });
-            }, 500);
+            outputTextArea.value = '';
         });
 
-        ipc.on("compressed", function compressed(args) {
-            outputTextArea.value = args.code;
+        ipc.on("compressed", function compressed(result) {
+            if(result.error){
+                alert(result.error.message);
+            }
+            else {
+                outputTextArea.value = result.code;
+            }
         });
 
-        var codeTypeArray = ["type-js", "type-css", "type-html"];
-
-        function changeCodeType(){
-            codeTypeArray.forEach(function(item){
-                $(item).classList.remove('current');
+        $("ball").addEventListener('click', function(){
+            outputTextArea.value = '';
+            ipc.send('compress', {
+                type: currentCodeType,
+                code: inputTextArea.value
             });
-            this.classList.add('current');
-        }
-
-        codeTypeArray.forEach(function(item){
-            $(item).addEventListener("click", changeCodeType);
         });
     })();
 </script>

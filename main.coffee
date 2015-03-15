@@ -21,5 +21,14 @@ app.on 'ready', ->
         mainWindow = null
 
 ipc.on 'compress', (e, args)->
-    if args.type is 'js'
-        e.sender.send 'compressed', api.minifyJS(args.code)
+    minifyFunc = null
+    switch args.type
+        when 'js' then minifyFunc = api.minifyJS
+        when 'css' then minifyFunc = api.minifyCss
+        when 'html' then minifyFunc = api.minifyHTML
+
+    minifyFunc.call null, args.code, (err, code)->
+        e.sender.send 'compressed',
+            error: err
+            code: code
+
