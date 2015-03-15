@@ -34,6 +34,7 @@ textarea:focus {
 }
 
 @code-type-border: 1px solid #67ACE7;
+@code-type-border-radius: 5px;
 
 .wrapper {
     width: calc(~'100% - 40px');
@@ -58,8 +59,14 @@ textarea:focus {
             border-bottom: @code-type-border;
             border-right: none;
         }
+        .js {
+            border-top-left-radius: @code-type-border-radius;
+            border-bottom-left-radius: @code-type-border-radius;
+        }
         button:last-child {
             border-right: @code-type-border;
+            border-top-right-radius: @code-type-border-radius;
+            border-bottom-right-radius: @code-type-border-radius;
         }
         button:focus {
             outline: none !important;

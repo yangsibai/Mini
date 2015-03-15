@@ -53,8 +53,14 @@ textarea:focus {
   border-bottom: 1px solid #67ace7;
   border-right: none;
 }
+.wrapper .type-bar .js {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
 .wrapper .type-bar button:last-child {
   border-right: 1px solid #67ace7;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 .wrapper .type-bar button:focus {
   outline: none !important;
