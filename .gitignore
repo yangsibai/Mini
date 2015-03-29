@@ -3,3 +3,4 @@ Atom/
 .DS_Store
 test.sh
 node_modules/
+bin/
