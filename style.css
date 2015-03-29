@@ -95,3 +95,11 @@ textarea:focus {
   top: 50%;
   cursor: pointer;
 }
+.wrapper .ball .compress {
+  display: block;
+  margin: auto;
+  width: 64px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
