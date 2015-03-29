@@ -29,9 +29,10 @@ textarea:focus {
   box-shadow: 0 0 10px #719ECE;
 }
 .wrapper {
-  width: calc(100% - 40px);
-  height: calc(100% - 40px);
   padding: 20px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
 .wrapper .type-bar {
   margin-bottom: 10px;
@@ -80,7 +81,6 @@ textarea:focus {
   clear: both;
 }
 .wrapper .code {
-  width: 100%;
   height: 100%;
 }
 .wrapper .ball {
