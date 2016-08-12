@@ -5,29 +5,6 @@ body {
   margin: 0;
   padding: 0;
 }
-.input {
-  width: 50%;
-  height: 80%;
-  float: left;
-}
-.output {
-  width: 50%;
-  height: 80%;
-  margin-left: 50%;
-}
-.output::after {
-  content: "";
-  clear: both;
-}
-textarea {
-  width: 100%;
-  height: 100%;
-}
-textarea:focus {
-  outline: none !important;
-  border: 1px solid red;
-  box-shadow: 0 0 10px #719ECE;
-}
 .wrapper {
   padding: 20px;
   width: 100%;
@@ -54,7 +31,7 @@ textarea:focus {
   border-bottom: 1px solid #67ace7;
   border-right: none;
 }
-.wrapper .type-bar .js {
+.wrapper .type-bar button:first-child {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
 }
@@ -83,7 +60,30 @@ textarea:focus {
 .wrapper .code {
   height: 100%;
 }
-.wrapper .ball {
+.wrapper .code .input {
+  width: 50%;
+  height: 80%;
+  float: left;
+}
+.wrapper .code .output {
+  width: 50%;
+  height: 80%;
+  margin-left: 50%;
+}
+.wrapper .code .output::after {
+  content: "";
+  clear: both;
+}
+.wrapper .code textarea {
+  width: 100%;
+  height: 100%;
+}
+.wrapper .code textarea:focus {
+  outline: none !important;
+  border: 1px solid red;
+  box-shadow: 0 0 10px #719ECE;
+}
+.wrapper .code .ball {
   width: 200px;
   height: 200px;
   margin-left: -100px;
@@ -95,11 +95,14 @@ textarea:focus {
   top: 50%;
   cursor: pointer;
 }
-.wrapper .ball .compress {
+.wrapper .code .ball .compress {
   display: block;
   margin: auto;
   width: 64px;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+}
+.wrapper .result {
+  position: absolute;
 }
